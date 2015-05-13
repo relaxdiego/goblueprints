@@ -76,20 +76,35 @@ const (
 var upgrader = &websocket.Upgrader{ReadBufferSize: socketBufferSize, WriteBufferSize: socketBufferSize}
 
 func (r *room) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	// Upgrade the HTTP connection to a websocket
 	socket, err := upgrader.Upgrade(w, req, nil)
 	if err != nil {
 		log.Fatal("ServeHTTP:", err)
 		return
 	}
 
+	// Represent this new connection as a client
 	client := &client{
 		socket: socket,
 		send:   make(chan []byte, messageBufferSize),
 		room:   r,
 	}
 
+	// Client joins the room
 	r.join <- client
+
+	// When the websocket closes, ServeHTTP() returns. The
+	// following closure function will then execute ensuring
+	// that the client is removed from the room
 	defer func() { r.leave <- client }()
+
+	// This goroutine waits for messages in the client's send
+	// channel. When something comes in, it will send it through
+	// the socket and to the actual client/browser it represents.
 	go client.write()
+
+	// This starts an infinite loop waiting for and processing
+	// messages that are coming from the client/browser. See
+	// more info from client.go
 	client.read()
 }

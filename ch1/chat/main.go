@@ -34,6 +34,8 @@ func main() {
 	http.Handle("/", &templateHandler{filename: "chat.html"})
 
 	r := newRoom()
+	// When /room is accessed, the ServeHTTP method of
+	// the room will be called.
 	http.Handle("/room", r)
 
 	// get the room going
