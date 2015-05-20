@@ -1,0 +1,9 @@
+{
+  "SecurityKey": "PUT SOME LONG RANDOM STRING HERE",
+
+  "Google": {
+    "ClientSecret": "SECRET KEY HERE",
+    "ClientID": "CLIENT ID HERE"
+  }
+
+}
