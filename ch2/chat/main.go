@@ -12,11 +12,13 @@ import (
 	"text/template"
 
 	"github.com/stretchr/gomniauth"
+	"github.com/stretchr/gomniauth/providers/facebook"
+	"github.com/stretchr/gomniauth/providers/github"
 	"github.com/stretchr/gomniauth/providers/google"
 	"github.com/stretchr/objx"
 )
 
-// templ represents a single template
+// templateHandler represents a single template
 type templateHandler struct {
 	once sync.Once
 
@@ -41,8 +43,11 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// appConfig holds the unmarshalled config file
 type appConfig struct {
 	SecurityKey string
+	Facebook    appProviderConfig
+	GitHub      appProviderConfig
 	Google      appProviderConfig
 }
 
@@ -76,6 +81,8 @@ func main() {
 	// Set up gomniauth
 	gomniauth.SetSecurityKey(config.SecurityKey)
 	gomniauth.WithProviders(
+		facebook.New(config.Facebook.ClientID, config.Facebook.ClientSecret, "http://localhost:8080/auth/callback/facebook"),
+		github.New(config.GitHub.ClientID, config.GitHub.ClientSecret, "http://localhost:8080/auth/callback/github"),
 		google.New(config.Google.ClientID, config.Google.ClientSecret, "http://localhost:8080/auth/callback/google"))
 
 	// handle static files in /assets

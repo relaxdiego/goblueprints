@@ -19,6 +19,7 @@
                 var socket = null;
                 var msgBox = $("#chatbox textarea");
                 var messages = $("#messages");
+
                 $("#chatbox").submit(function(){
                     if (!msgBox.val()) return false;
                     if (!socket) {
@@ -29,6 +30,7 @@
                     msgBox.val("");
                     return false;
                 });
+
                 if (!window["WebSocket"]) {
                     alert("Error: Your browser does not support web sockets.")
                 } else {
