@@ -1,0 +1,19 @@
+{
+  "SecurityKey": "PUT SOME LONG RANDOM STRING HERE",
+
+  "Facebook": {
+	"ClientID": "CLIENT ID HERE",
+    "ClientSecret": "SECRET KEY HERE"
+  },
+
+  "GitHub": {
+    "ClientID": "CLIENT ID HERE",
+    "ClientSecret": "SECRET KEY HERE"
+  },
+
+  "Google": {
+    "ClientID": "CLIENT ID HERE",
+    "ClientSecret": "SECRET KEY HERE"
+  }
+
+}
